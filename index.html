@@ -1,923 +1,1256 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Harsh Gupta - Portfolio & Education Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-navy: #1a2a4a;
-      --accent-green: #2d7a4a;
-      --text-light: #f8fafc;
-      --text-muted: #cbd5e1;
-      --card-bg: #1e335a;
+      --bg-navy: #0f1e36;
+      --bg-navy2: #1a2a4a;
+      --accent-green: #22c55e;
+      --accent-green-dim: #16a34a;
+      --accent-cyan: #06b6d4;
+      --text-light: #f0f6ff;
+      --text-muted: #94a3b8;
+      --card-bg: #162035;
+      --card-bg2: #1e3050;
       --border-color: #2a4173;
-      --font-main: system-ui, -apple-system, sans-serif;
+      --font-main: 'Sora', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-main);
-      background-color: var(--bg-navy);
-      color: var(--text-light);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4 {
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-    h1 { font-size: 3rem; }
-    h2 { font-size: 2.25rem; color: var(--accent-green); }
-    h3 { font-size: 1.5rem; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-main); background: var(--bg-navy); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
+    h1,h2,h3,h4 { line-height: 1.2; margin-bottom: 1rem; }
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); color: var(--accent-green); }
+    h3 { font-size: 1.4rem; }
     p { margin-bottom: 1rem; color: var(--text-muted); }
     a { color: var(--accent-green); text-decoration: none; }
-    
-    /* Layout & Utilities */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .section {
-      padding: 6rem 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .btn {
-      display: inline-block;
-      background-color: var(--accent-green);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .btn:hover {
-      background-color: #3b9b5f;
-      transform: translateY(-2px);
-    }
-    .btn-outline {
-      background-color: transparent;
-      border: 2px solid var(--accent-green);
-      color: var(--accent-green);
-    }
-    .btn-outline:hover {
-      background-color: var(--accent-green);
-      color: #fff;
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .section { padding: 5rem 0; border-bottom: 1px solid var(--border-color); }
+    .btn { display: inline-block; background: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; font-family: var(--font-main); font-size: 0.95rem; }
+    .btn:hover { background: var(--accent-green-dim); transform: translateY(-2px); }
+    .btn-outline { background: transparent; border: 2px solid var(--accent-green); color: var(--accent-green); }
+    .btn-outline:hover { background: var(--accent-green); color: #fff; }
+    .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
+    .btn-danger { background: #ef4444; }
+    .btn-danger:hover { background: #dc2626; }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; background: var(--accent-green); color: #fff; }
+
+    /* NAV */
+    header { position: fixed; top: 0; left: 0; right: 0; background: rgba(15,30,54,0.96); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border-color); }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; height: 68px; }
+    .logo { font-size: 1.3rem; font-weight: 800; color: var(--text-light); letter-spacing: -0.5px; }
+    .logo span { color: var(--accent-green); }
+    .nav-links { display: flex; gap: 1.8rem; align-items: center; }
+    .nav-links a { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent-green); }
+    .nav-links a.admin-link { background: var(--accent-green); color: #fff; padding: 0.4rem 0.9rem; border-radius: 0.4rem; font-size: 0.85rem; }
+    .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
+    @media(max-width:768px) {
+      .mobile-menu-btn { display: block; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--bg-navy2); padding: 1rem; gap: 0.5rem; }
+      .nav-links.active { display: flex; }
     }
 
-    /* Navigation */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(26, 42, 74, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .nav-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 70px;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--text-light);
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-    .nav-links a {
-      color: var(--text-light);
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover {
-      color: var(--accent-green);
-    }
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-light);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
+    /* HERO */
+    #home { min-height: 100vh; display: flex; align-items: center; padding-top: 68px; position: relative; overflow: hidden; }
+    #home::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 70% 30%, rgba(34,197,94,0.08) 0%, transparent 60%); pointer-events:none; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    @media(max-width:768px){ .hero-grid { grid-template-columns:1fr; } }
+    .hero-subtitle { color: var(--accent-green); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; display: block; }
+    .stats-row { display: flex; gap: 1.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .stat-card { background: var(--card-bg); padding: 1.25rem 1.5rem; border-radius: 1rem; flex: 1; min-width: 100px; text-align: center; border: 1px solid var(--border-color); }
+    .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--accent-green); margin-bottom: 0.25rem; font-family: var(--font-mono); }
+    .hero-avatar { width: 100%; max-width: 380px; aspect-ratio: 1; border-radius: 2rem; background: linear-gradient(135deg, var(--card-bg2), var(--border-color)); border: 2px solid var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 5rem; margin: auto; position: relative; overflow: hidden; }
+    .hero-avatar::after { content:''; position:absolute; inset:0; background: radial-gradient(circle at center, rgba(34,197,94,0.15), transparent); }
 
-    /* Hero Section */
-    #home {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding-top: 70px;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    .hero-subtitle {
-      color: var(--accent-green);
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .stats-row {
-      display: flex;
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-    .stat-card {
-      background-color: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      flex: 1;
-      text-align: center;
-      border: 1px solid var(--border-color);
-    }
-    .stat-num {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: var(--accent-green);
-      margin-bottom: 0.5rem;
-    }
+    /* ABOUT */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .skill-category { background: var(--card-bg); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border-color); }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .skill-tag { background: rgba(34,197,94,0.1); color: var(--accent-green); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.82rem; border: 1px solid rgba(34,197,94,0.25); }
 
-    /* About Section */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .skill-category {
-      background-color: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 1rem;
-    }
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .skill-tag {
-      background-color: rgba(45, 122, 74, 0.2);
-      color: var(--accent-green);
-      padding: 0.25rem 0.75rem;
-      border-radius: 2rem;
-      font-size: 0.875rem;
-      border: 1px solid rgba(45, 122, 74, 0.3);
-    }
+    /* ACHIEVEMENTS */
+    .achievements-list { display: grid; gap: 1.5rem; }
+    .achievement-card { background: var(--card-bg); padding: 1.75rem; border-radius: 1rem; border-left: 4px solid var(--accent-green); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-green); }
+    .achievement-date { color: var(--accent-green); font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; display: block; font-family: var(--font-mono); letter-spacing: 1px; }
 
-    /* Achievements */
-    .achievements-list {
-      display: grid;
-      gap: 2rem;
-    }
-    .achievement-card {
-      background-color: var(--card-bg);
-      padding: 2rem;
-      border-radius: 1rem;
-      border-left: 4px solid var(--accent-green);
-    }
-    .achievement-date {
-      color: var(--accent-green);
-      font-size: 0.875rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
+    /* CERTIFICATES */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1.5rem; }
+    .gallery-item { cursor: pointer; border-radius: 1rem; overflow: hidden; position: relative; aspect-ratio: 4/3; background: var(--card-bg); border: 1px solid var(--border-color); transition: transform 0.3s,box-shadow 0.3s; }
+    .gallery-item:hover { transform: scale(1.03); box-shadow: 0 12px 32px rgba(34,197,94,0.15); }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; }
+    .gallery-caption { position:absolute; bottom:0; left:0; right:0; background: rgba(15,30,54,0.92); padding:1rem; transform:translateY(100%); transition:transform 0.3s; }
+    .gallery-item:hover .gallery-caption { transform:translateY(0); }
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:3000; justify-content:center; align-items:center; padding:2rem; }
+    .lightbox.active { display:flex; }
+    .lightbox img { max-width:100%; max-height:90vh; border-radius:0.5rem; }
+    .lightbox-close { position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:white; font-size:2.5rem; cursor:pointer; }
 
-    /* Certificates Gallery */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .gallery-item {
-      cursor: pointer;
-      border-radius: 1rem;
-      overflow: hidden;
-      position: relative;
-      aspect-ratio: 4/3;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      transition: transform 0.3s;
-    }
-    .gallery-item:hover {
-      transform: scale(1.02);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .gallery-caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(26, 42, 74, 0.9);
-      padding: 1rem;
-      transform: translateY(100%);
-      transition: transform 0.3s;
-    }
-    .gallery-item:hover .gallery-caption {
-      transform: translateY(0);
-    }
+    /* RESOURCES */
+    .search-bar { width:100%; padding:0.9rem 1.5rem; border-radius:0.5rem; border:1px solid var(--border-color); background:var(--card-bg); color:var(--text-light); font-size:1rem; margin-bottom:2rem; font-family:var(--font-main); }
+    .search-bar:focus { outline:none; border-color:var(--accent-green); }
+    .accordion-item { background:var(--card-bg); border-radius:0.5rem; margin-bottom:0.75rem; overflow:hidden; border:1px solid var(--border-color); }
+    .accordion-header { padding:1.25rem 1.5rem; background:none; border:none; width:100%; text-align:left; color:var(--text-light); font-size:1.1rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-main); }
+    .accordion-content { padding:0 1.5rem; max-height:0; overflow:hidden; transition:max-height 0.3s ease-out; }
+    .accordion-item.active .accordion-content { padding-bottom:1.5rem; }
+    .resource-link { display:flex; align-items:center; gap:1rem; padding:0.7rem 0.75rem; background:rgba(0,0,0,0.2); border-radius:0.5rem; margin-bottom:0.5rem; cursor:pointer; transition:background 0.2s; }
+    .resource-link:hover { background:rgba(34,197,94,0.1); }
 
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
-    .lightbox.active {
-      display: flex;
-    }
-    .lightbox img {
-      max-width: 100%;
-      max-height: 90vh;
-      border-radius: 0.5rem;
-    }
-    .lightbox-close {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 2rem;
-      cursor: pointer;
-    }
+    /* CONTACT */
+    .contact-container { display:grid; grid-template-columns:1fr 1fr; gap:4rem; }
+    @media(max-width:768px){ .contact-container { grid-template-columns:1fr; } }
+    .form-group { margin-bottom:1.25rem; }
+    .form-control { width:100%; padding:0.9rem 1rem; border-radius:0.5rem; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text-light); font-family:var(--font-main); font-size:0.95rem; }
+    .form-control:focus { outline:none; border-color:var(--accent-green); }
+    textarea.form-control { min-height:140px; resize:vertical; }
+    #formMessage { display:none; padding:1rem; border-radius:0.5rem; background:rgba(34,197,94,0.1); color:var(--accent-green); border:1px solid var(--accent-green); margin-top:1rem; }
 
-    /* Resources */
-    .search-bar {
-      width: 100%;
-      padding: 1rem 1.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-light);
-      font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-    .search-bar:focus {
-      outline: none;
-      border-color: var(--accent-green);
-    }
-    .accordion-item {
-      background-color: var(--card-bg);
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-      overflow: hidden;
-    }
-    .accordion-header {
-      padding: 1.5rem;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      color: var(--text-light);
-      font-size: 1.25rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .accordion-content {
-      padding: 0 1.5rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-    }
-    .accordion-item.active .accordion-content {
-      padding-bottom: 1.5rem;
-    }
-    .resource-link {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.75rem;
-      background-color: rgba(0,0,0,0.2);
-      border-radius: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
+    /* FOOTER */
+    footer { padding: 2.5rem 0; text-align:center; border-top:1px solid var(--border-color); }
 
-    /* Contact Form */
-    .contact-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .form-control {
-      width: 100%;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-light);
-      font-family: inherit;
-    }
-    .form-control:focus {
-      outline: none;
-      border-color: var(--accent-green);
-    }
-    textarea.form-control {
-      min-height: 150px;
-      resize: vertical;
-    }
-    #formMessage {
-      display: none;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      background-color: rgba(45, 122, 74, 0.2);
-      color: var(--accent-green);
-      border: 1px solid var(--accent-green);
-      margin-top: 1rem;
-    }
+    /* ===== CHAT WIDGET ===== */
+    .chat-widget { position:fixed; bottom:2rem; right:2rem; z-index:1500; }
+    .chat-toggle { width:62px; height:62px; border-radius:50%; background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan)); color:#fff; border:none; cursor:pointer; box-shadow:0 4px 20px rgba(34,197,94,0.4); display:flex; align-items:center; justify-content:center; font-size:1.6rem; transition:transform 0.3s,box-shadow 0.3s; }
+    .chat-toggle:hover { transform:scale(1.12); box-shadow:0 6px 28px rgba(34,197,94,0.6); }
+    .chat-box { display:none; position:absolute; bottom:75px; right:0; width:360px; background:var(--bg-navy2); border:1px solid var(--border-color); border-radius:1.25rem; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.5); flex-direction:column; }
+    .chat-box.active { display:flex; }
+    .chat-header { background: linear-gradient(135deg, var(--accent-green-dim), var(--accent-cyan)); padding:1rem 1.25rem; font-weight:700; font-size:0.95rem; display:flex; align-items:center; gap:0.6rem; }
+    .chat-header::before { content:'🤖'; font-size:1.2rem; }
+    .chat-body { padding:1rem; min-height:280px; max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:0.6rem; }
+    .chat-msg { padding:0.6rem 0.9rem; border-radius:0.75rem; font-size:0.875rem; line-height:1.5; max-width:85%; word-break:break-word; }
+    .chat-msg.bot { background:var(--card-bg2); color:var(--text-light); align-self:flex-start; border-bottom-left-radius:0.2rem; }
+    .chat-msg.user { background: linear-gradient(135deg, var(--accent-green-dim), var(--accent-green)); color:#fff; align-self:flex-end; border-bottom-right-radius:0.2rem; }
+    .chat-msg.typing { background:var(--card-bg2); align-self:flex-start; }
+    .typing-dots { display:flex; gap:4px; padding:2px 0; }
+    .typing-dots span { width:8px; height:8px; background:var(--text-muted); border-radius:50%; animation:bounce 1.4s infinite ease-in-out; }
+    .typing-dots span:nth-child(2) { animation-delay:0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+    .chat-input-area { display:flex; padding:0.75rem; border-top:1px solid var(--border-color); gap:0.5rem; }
+    .chat-input-area input { flex:1; padding:0.6rem 0.9rem; border-radius:0.5rem; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text-light); font-family:var(--font-main); font-size:0.875rem; }
+    .chat-input-area input:focus { outline:none; border-color:var(--accent-green); }
 
-    /* Chat Widget */
-    .chat-widget {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 1000;
-    }
-    .chat-toggle {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: var(--accent-green);
-      color: white;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: transform 0.3s;
-    }
-    .chat-toggle:hover {
-      transform: scale(1.1);
-    }
-    .chat-box {
-      display: none;
-      position: absolute;
-      bottom: 80px;
-      right: 0;
-      width: 300px;
-      background-color: var(--card-bg);
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      overflow: hidden;
-    }
-    .chat-box.active {
-      display: block;
-    }
-    .chat-header {
-      background-color: var(--accent-green);
-      padding: 1rem;
-      color: white;
-      font-weight: bold;
-    }
-    .chat-body {
-      padding: 1rem;
-      height: 250px;
-      overflow-y: auto;
-    }
-    .chat-message {
-      background-color: rgba(0,0,0,0.2);
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      margin-bottom: 1rem;
-    }
-    .chat-input-area {
-      padding: 1rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 0.5rem;
-    }
-    .chat-input-area input {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 0.25rem;
-      border: 1px solid var(--border-color);
-      background-color: rgba(0,0,0,0.2);
-      color: white;
-    }
+    /* ===== ADMIN PANEL ===== */
+    #adminLoginOverlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:4000; justify-content:center; align-items:center; backdrop-filter:blur(6px); }
+    #adminLoginOverlay.active { display:flex; }
+    .admin-login-card { background:var(--bg-navy2); border:1px solid var(--border-color); border-radius:1.5rem; padding:2.5rem; width:100%; max-width:420px; box-shadow:0 30px 80px rgba(0,0,0,0.6); }
+    .admin-login-card h2 { text-align:center; margin-bottom:0.5rem; font-size:1.6rem; }
+    .admin-login-card p { text-align:center; font-size:0.85rem; margin-bottom:2rem; }
+    .admin-login-close { position:absolute; top:1.25rem; right:1.5rem; background:none; border:none; color:var(--text-muted); font-size:1.8rem; cursor:pointer; }
+    .login-error { color:#f87171; font-size:0.85rem; text-align:center; margin-top:0.5rem; display:none; }
 
-    /* Footer */
-    footer {
-      background-color: rgba(0,0,0,0.2);
-      padding: 2rem 0;
-      text-align: center;
-      border-top: 1px solid var(--border-color);
-    }
+    /* Admin Panel */
+    #adminPanel { display:none; position:fixed; inset:0; z-index:3500; background:var(--bg-navy); overflow:hidden; flex-direction:row; }
+    #adminPanel.active { display:flex; }
+    .admin-sidebar { width:260px; min-width:260px; background:var(--card-bg); border-right:1px solid var(--border-color); display:flex; flex-direction:column; overflow-y:auto; }
+    .admin-sidebar-header { padding:1.5rem 1.25rem; border-bottom:1px solid var(--border-color); }
+    .admin-logo { font-size:1.1rem; font-weight:800; color:var(--text-light); }
+    .admin-logo span { color:var(--accent-green); }
+    .admin-badge-label { font-size:0.7rem; font-family:var(--font-mono); color:var(--accent-green); letter-spacing:2px; text-transform:uppercase; margin-top:0.3rem; }
+    .admin-nav { padding:1rem 0.75rem; flex:1; }
+    .admin-nav-section { font-size:0.7rem; font-family:var(--font-mono); color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; padding:0.6rem 0.75rem 0.3rem; }
+    .admin-nav-item { display:flex; align-items:center; gap:0.75rem; padding:0.7rem 0.75rem; border-radius:0.5rem; cursor:pointer; color:var(--text-muted); font-size:0.875rem; font-weight:500; transition:all 0.2s; margin-bottom:0.2rem; border:none; background:none; width:100%; text-align:left; font-family:var(--font-main); }
+    .admin-nav-item:hover { background:rgba(34,197,94,0.08); color:var(--text-light); }
+    .admin-nav-item.active { background:rgba(34,197,94,0.15); color:var(--accent-green); }
+    .admin-nav-item .nav-icon { font-size:1.1rem; width:22px; text-align:center; }
+    .admin-sidebar-footer { padding:1rem 1.25rem; border-top:1px solid var(--border-color); }
 
-    /* Print Styles */
-    @media print {
-      body {
-        background-color: white;
-        color: black;
-      }
-      header, .chat-widget, .btn, .lightbox, .search-bar {
-        display: none !important;
-      }
-      .section {
-        border-bottom: 1px solid #ccc;
-        padding: 2rem 0;
-        page-break-inside: avoid;
-      }
-      h1, h2, h3, h4, p, span {
-        color: black !important;
-      }
-      .stat-card, .skill-category, .achievement-card, .accordion-item {
-        background-color: #f5f5f5 !important;
-        border: 1px solid #ccc !important;
-      }
-      .accordion-content {
-        max-height: none !important;
-        padding-bottom: 1.5rem !important;
-      }
-    }
+    .admin-main { flex:1; overflow-y:auto; padding:2rem; }
+    .admin-topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+    .admin-topbar h1 { font-size:1.5rem; font-weight:700; margin-bottom:0; }
+    .admin-topbar p { margin-bottom:0; font-size:0.85rem; }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero-grid, .contact-container {
-        grid-template-columns: 1fr;
-      }
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background-color: var(--bg-navy);
-        flex-direction: column;
-        padding: 2rem;
-        text-align: center;
-        border-bottom: 1px solid var(--border-color);
-      }
-      .nav-links.active {
-        display: flex;
-      }
-      .mobile-menu-btn {
-        display: block;
-      }
-      h1 { font-size: 2.5rem; }
+    .admin-page { display:none; }
+    .admin-page.active { display:block; }
+
+    /* Dashboard Stats */
+    .stat-cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.25rem; margin-bottom:2rem; }
+    .stat-widget { background:var(--card-bg); border:1px solid var(--border-color); border-radius:1rem; padding:1.5rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .stat-widget-icon { font-size:2rem; }
+    .stat-widget-num { font-size:2rem; font-weight:800; color:var(--accent-green); font-family:var(--font-mono); }
+    .stat-widget-label { font-size:0.82rem; color:var(--text-muted); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; background:var(--card-bg); border-radius:1rem; overflow:hidden; border:1px solid var(--border-color); }
+    .data-table th { background:var(--card-bg2); padding:0.9rem 1rem; text-align:left; font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono); letter-spacing:1px; text-transform:uppercase; }
+    .data-table td { padding:0.9rem 1rem; border-top:1px solid var(--border-color); font-size:0.875rem; vertical-align:middle; }
+    .data-table tr:hover td { background:rgba(34,197,94,0.03); }
+    .status-pill { display:inline-block; padding:0.2rem 0.6rem; border-radius:99px; font-size:0.75rem; font-weight:600; }
+    .status-active { background:rgba(34,197,94,0.15); color:var(--accent-green); }
+    .status-pending { background:rgba(251,191,36,0.15); color:#fbbf24; }
+    .status-inactive { background:rgba(239,68,68,0.1); color:#f87171; }
+
+    /* Forms inside admin */
+    .admin-form { background:var(--card-bg); border:1px solid var(--border-color); border-radius:1rem; padding:2rem; }
+    .admin-form label { display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:0.4rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:768px){ .form-row { grid-template-columns:1fr; } }
+    .admin-section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+    .admin-section-header h2 { font-size:1.2rem; color:var(--text-light); margin-bottom:0; }
+    .table-wrapper { overflow-x:auto; border-radius:1rem; }
+    .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--accent-green); color:#fff; padding:0.75rem 1.5rem; border-radius:0.75rem; font-weight:600; z-index:9999; transition:transform 0.4s; box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* Complaint cards */
+    .complaint-card { background:var(--card-bg); border:1px solid var(--border-color); border-radius:1rem; padding:1.5rem; margin-bottom:1rem; }
+    .complaint-card h4 { margin-bottom:0.5rem; font-size:1rem; }
+    .complaint-meta { font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem; }
+
+    /* Notice editor */
+    .notice-item { background:var(--card-bg); border:1px solid var(--border-color); border-radius:0.75rem; padding:1.25rem; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; }
+    .notice-item .notice-text { flex:1; font-size:0.9rem; }
+    .notice-item .notice-date { font-size:0.78rem; color:var(--text-muted); font-family:var(--font-mono); margin-left:1rem; margin-right:1rem; }
+
+    /* Mobile admin */
+    @media(max-width:768px){
+      #adminPanel { flex-direction:column; }
+      .admin-sidebar { width:100%; min-width:unset; max-height:60px; overflow:hidden; transition:max-height 0.3s; }
+      .admin-sidebar.open { max-height:500px; }
+      .admin-main { padding:1rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="container nav-container">
-      <div class="logo">Harsh Gupta</div>
-      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-      <nav class="nav-links" id="navLinks">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#achievements">Achievements</a>
-        <a href="#certificates">Certificates</a>
-        <a href="#resources">Resources</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<!-- HEADER -->
+<header>
+  <div class="container nav-container">
+    <div class="logo">Harsh<span>.</span>G</div>
+    <nav id="navLinks" class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#resources">Resources</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="admin-link" onclick="openAdminLogin(event)">⚙ Admin</a>
+    </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+  </div>
+</header>
 
-  <section id="home" class="section">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="hero-subtitle">Class 12 Science Student</span>
-          <h1>Preparing for Excellence</h1>
-          <p style="font-size: 1.125rem; margin-bottom: 2rem;">Aspiring civil servant documenting my academic journey and sharing curated resources for competitive exams.</p>
-          <div style="display: flex; gap: 1rem;">
-            <a href="#about" class="btn">Explore Journey</a>
-            <a href="#resources" class="btn btn-outline">View Resources</a>
-          </div>
-          
-          <div class="stats-row">
-            <div class="stat-card">
-              <div class="stat-num">3+</div>
-              <p style="margin:0; font-size: 0.875rem;">District Awards</p>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num">5</div>
-              <p style="margin:0; font-size: 0.875rem;">Certifications</p>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num">50+</div>
-              <p style="margin:0; font-size: 0.875rem;">Study Resources</p>
-            </div>
-          </div>
+<!-- HERO -->
+<section id="home" class="section">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-subtitle">Class 12 Science Student</span>
+        <h1>Preparing for <span style="color:var(--accent-green)">Excellence</span></h1>
+        <p style="font-size:1.05rem; margin-bottom:2rem;">Aspiring civil servant documenting my academic journey and sharing curated resources for competitive exams.</p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="#about" class="btn">Explore Journey</a>
+          <a href="#resources" class="btn btn-outline">View Resources</a>
         </div>
-        <div style="display: flex; justify-content: center;">
-          <div style="width: 100%; max-width: 400px; aspect-ratio: 1; border-radius: 2rem; background: linear-gradient(45deg, var(--card-bg), var(--border-color)); border: 2px solid var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--accent-green);">
-            🎓
-          </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num" id="stat1">3+</div><p style="margin:0;font-size:0.8rem;">District Awards</p></div>
+          <div class="stat-card"><div class="stat-num" id="stat2">5</div><p style="margin:0;font-size:0.8rem;">Certifications</p></div>
+          <div class="stat-card"><div class="stat-num" id="stat3">50+</div><p style="margin:0;font-size:0.8rem;">Study Resources</p></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;">
+        <div class="hero-avatar">🎓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="container">
+    <h2>About Me</h2>
+    <p>I am a dedicated high school student with a strong foundation in sciences and a clear vision for public service. My academic pursuit is balanced with active participation in extracurricular activities.</p>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3>Education</h3>
+        <p><strong>Higher Secondary (Class 12)</strong><br>Science Stream (PCM)<br>Expected Graduation: 2024</p>
+        <p style="margin-bottom:0;"><strong>Secondary (Class 10)</strong><br>Board of Secondary Education<br>Score: 95%</p>
+      </div>
+      <div class="skill-category">
+        <h3>Core Subjects</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Advanced Physics</span>
+          <span class="skill-tag">Organic Chemistry</span>
+          <span class="skill-tag">Calculus</span>
+          <span class="skill-tag">English Literature</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h3>Soft Skills</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Public Speaking</span>
+          <span class="skill-tag">Analytical Thinking</span>
+          <span class="skill-tag">Time Management</span>
+          <span class="skill-tag">Leadership</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="about" class="section">
-    <div class="container">
-      <h2>About Me</h2>
-      <p>I am a dedicated high school student with a strong foundation in sciences and a clear vision for public service. My academic pursuit is balanced with active participation in extracurricular activities.</p>
-      
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3>Education</h3>
-          <p><strong>Higher Secondary (Class 12)</strong><br>Science Stream (PCM)<br>Expected Graduation: 2024</p>
-          <p><strong>Secondary (Class 10)</strong><br>Board of Secondary Education<br>Score: 95%</p>
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="section">
+  <div class="container">
+    <h2>Key Achievements</h2>
+    <p>Recognition at various competitive levels showcasing academic and extracurricular excellence.</p>
+    <div class="achievements-list" id="achievementsList">
+      <div class="achievement-card">
+        <span class="achievement-date">OCTOBER 2023</span>
+        <h3>1st Prize – District Science Exhibition</h3>
+        <p style="margin-bottom:0;">Awarded first place for developing a working model of a sustainable water purification system utilizing locally sourced materials. Competing against 50+ regional schools.</p>
+      </div>
+      <div class="achievement-card">
+        <span class="achievement-date">AUGUST 2023</span>
+        <h3>Gold Medal – Regional Mathematics Olympiad</h3>
+        <p style="margin-bottom:0;">Secured the top position in the regional mathematics olympiad, demonstrating exceptional problem-solving skills in advanced algebra and combinatorics.</p>
+      </div>
+      <div class="achievement-card">
+        <span class="achievement-date">JANUARY 2023</span>
+        <h3>Best Speaker – Inter-School Debate Championship</h3>
+        <p style="margin-bottom:0;">Recognized as the best speaker in the final round discussing the socioeconomic impacts of AI in developing nations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates" class="section">
+  <div class="container">
+    <h2>Certificates & Verifications</h2>
+    <p>Official documentation of completed courses, workshops, and achievements.</p>
+    <div class="gallery-grid" id="certificatesGallery">
+      <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%231e335a'/><rect x='20' y='20' width='760' height='560' fill='none' stroke='%2322c55e' stroke-width='10'/><text x='50%' y='45%' fill='%23fff' font-family='sans-serif' font-size='42' text-anchor='middle'>National Science Camp</text><text x='50%' y='57%' fill='%2394a3b8' font-family='sans-serif' font-size='24' text-anchor='middle'>Certificate of Completion</text></svg>" alt="Science Camp">
+        <div class="gallery-caption">National Science Camp Completion</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%231e335a'/><rect x='20' y='20' width='760' height='560' fill='none' stroke='%2322c55e' stroke-width='10'/><text x='50%' y='45%' fill='%23fff' font-family='sans-serif' font-size='42' text-anchor='middle'>Mathematics Olympiad</text><text x='50%' y='57%' fill='%2394a3b8' font-family='sans-serif' font-size='24' text-anchor='middle'>Gold Medalist</text></svg>" alt="Math Olympiad">
+        <div class="gallery-caption">Mathematics Olympiad Gold Medal</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%231e335a'/><rect x='20' y='20' width='760' height='560' fill='none' stroke='%2322c55e' stroke-width='10'/><text x='50%' y='45%' fill='%23fff' font-family='sans-serif' font-size='42' text-anchor='middle'>District Debate</text><text x='50%' y='57%' fill='%2394a3b8' font-family='sans-serif' font-size='24' text-anchor='middle'>Best Speaker Award</text></svg>" alt="Debate">
+        <div class="gallery-caption">District Debate Champion</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%231e335a'/><rect x='20' y='20' width='760' height='560' fill='none' stroke='%2322c55e' stroke-width='10'/><text x='50%' y='45%' fill='%23fff' font-family='sans-serif' font-size='38' text-anchor='middle'>Community Service Award</text><text x='50%' y='57%' fill='%2394a3b8' font-family='sans-serif' font-size='24' text-anchor='middle'>100+ Hours Volunteer</text></svg>" alt="Volunteer">
+        <div class="gallery-caption">Community Service Award</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="Certificate" onclick="event.stopPropagation()">
+</div>
+
+<!-- RESOURCES -->
+<section id="resources" class="section">
+  <div class="container">
+    <h2>Class 12 Resources</h2>
+    <p>Compiled study materials and notes organized by subject.</p>
+    <input type="text" id="resourceSearch" class="search-bar" placeholder="Search topics, chapters or keywords...">
+    <div id="resourceAccordion">
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Mathematics <span>+</span></button>
+        <div class="accordion-content">
+          <div class="resource-link">📄 <span class="res-title">Calculus Formula Sheet (Complete)</span></div>
+          <div class="resource-link">📄 <span class="res-title">Probability Important Questions Bank</span></div>
+          <div class="resource-link">🎥 <span class="res-title">3D Geometry Revision Lecture</span></div>
         </div>
-        <div class="skill-category">
-          <h3>Core Subjects</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Advanced Physics</span>
-            <span class="skill-tag">Organic Chemistry</span>
-            <span class="skill-tag">Calculus</span>
-            <span class="skill-tag">English Literature</span>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Physics <span>+</span></button>
+        <div class="accordion-content">
+          <div class="resource-link">📄 <span class="res-title">Electromagnetism Handwritten Notes</span></div>
+          <div class="resource-link">📄 <span class="res-title">Optics Derivations PDF</span></div>
+          <div class="resource-link">🎥 <span class="res-title">Modern Physics Concept Map</span></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Chemistry <span>+</span></button>
+        <div class="accordion-content">
+          <div class="resource-link">📄 <span class="res-title">Organic Name Reactions Summary</span></div>
+          <div class="resource-link">📄 <span class="res-title">Electrochemistry Numerical Guide</span></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Biology <span>+</span></button>
+        <div class="accordion-content">
+          <div class="resource-link">📄 <span class="res-title">Genetics Mind Maps</span></div>
+          <div class="resource-link">📄 <span class="res-title">Human Physiology NCERT Highlights</span></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">English <span>+</span></button>
+        <div class="accordion-content">
+          <div class="resource-link">📄 <span class="res-title">Literature Section Summaries</span></div>
+          <div class="resource-link">📄 <span class="res-title">Advanced Writing Skills Formats</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-container">
+      <div>
+        <h2>Get in Touch</h2>
+        <p>Whether you're a fellow student, educator, or mentor, I'd love to connect.</p>
+        <div style="margin-top:2rem;">
+          <p>📧 Email: <a href="mailto:hg20046@gmail.com">hg20046@gmail.com</a></p>
+          <p>📍 Location: New Delhi, India</p>
+          <p>🎓 Class 12 Science | UPSC Aspirant</p>
+        </div>
+      </div>
+      <div>
+        <form id="contactForm" onsubmit="handleContactSubmit(event)">
+          <div class="form-group">
+            <label for="cname" style="display:block;margin-bottom:0.5rem;">Full Name</label>
+            <input type="text" id="cname" class="form-control" required placeholder="Jane Doe">
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>Soft Skills</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Public Speaking</span>
-            <span class="skill-tag">Analytical Thinking</span>
-            <span class="skill-tag">Time Management</span>
-            <span class="skill-tag">Leadership</span>
+          <div class="form-group">
+            <label for="cemail" style="display:block;margin-bottom:0.5rem;">Email Address</label>
+            <input type="email" id="cemail" class="form-control" required placeholder="jane@example.com">
           </div>
-        </div>
+          <div class="form-group">
+            <label for="cmessage" style="display:block;margin-bottom:0.5rem;">Message</label>
+            <textarea id="cmessage" class="form-control" required placeholder="Your message here..."></textarea>
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Send Message</button>
+          <div id="formMessage">Thanks for reaching out! I'll get back to you soon.</div>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="achievements" class="section">
-    <div class="container">
-      <h2>Key Achievements</h2>
-      <p>Recognition at various competitive levels showcasing academic and extracurricular excellence.</p>
-      
-      <div class="achievements-list">
-        <div class="achievement-card">
-          <span class="achievement-date">October 2023</span>
-          <h3>1st Prize - District Science Exhibition</h3>
-          <p>Awarded first place for developing a working model of a sustainable water purification system utilizing locally sourced materials. Competing against 50+ regional schools.</p>
-        </div>
-        <div class="achievement-card">
-          <span class="achievement-date">August 2023</span>
-          <h3>Gold Medal - Regional Mathematics Olympiad</h3>
-          <p>Secured the top position in the regional mathematics olympiad, demonstrating exceptional problem-solving skills in advanced algebra and combinatorics.</p>
-        </div>
-        <div class="achievement-card">
-          <span class="achievement-date">January 2023</span>
-          <h3>Best Speaker - Inter-School Debate Championship</h3>
-          <p>Recognized as the best speaker in the final round discussing the socioeconomic impacts of artificial intelligence in developing nations.</p>
-        </div>
-      </div>
+<footer>
+  <div class="container">
+    <h3 style="color:var(--text-light);margin-bottom:0.5rem;">Harsh Gupta</h3>
+    <p style="margin-bottom:0;font-size:0.875rem;">© 2026 Harsh Gupta Portfolio. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- CHAT WIDGET -->
+<div class="chat-widget">
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">AI Assistant – Ask me anything!</div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg bot">Hi! I'm Harsh's AI assistant powered by Claude. Ask me about his academics, achievements, resources, or anything else! 🎓</div>
     </div>
-  </section>
-
-  <section id="certificates" class="section">
-    <div class="container">
-      <h2>Certificates & Verifications</h2>
-      <p>Official documentation of completed courses, workshops, and achievements.</p>
-      
-      <!-- Using SVG data URIs to simulate base64 images without huge file sizes -->
-      <div class="gallery-grid">
-        <div class="gallery-item" onclick="openLightbox('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OYXRpb25hbCBTY2llbmNlIENhbXA8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZpbGw9IiNjYmQ1ZTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DZXJ0aWZpY2F0ZSBvZiBDb21wbGV0aW9uPC90ZXh0Pjwvc3ZnPg==')">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OYXRpb25hbCBTY2llbmNlIENhbXA8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZpbGw9IiNjYmQ1ZTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DZXJ0aWZpY2F0ZSBvZiBDb21wbGV0aW9uPC90ZXh0Pjwvc3ZnPg==" alt="Science Camp">
-          <div class="gallery-caption">National Science Camp Completion</div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NYXRoZW1hdGljcyBPbHltcGlhZDwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjU1JSIgZmlsbD0iI2NiZDVlMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdvbGQgTWVkYWxpc3Q8L3RleHQ+PC9zdmc+')">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NYXRoZW1hdGljcyBPbHltcGlhZDwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjU1JSIgZmlsbD0iI2NiZDVlMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdvbGQgTWVkYWxpc3Q8L3RleHQ+PC9zdmc+" alt="Math Olympiad">
-          <div class="gallery-caption">Mathematics Olympiad Gold Medal</div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5EaXN0cmljdCBEZWJhdGU8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZpbGw9IiNjYmQ1ZTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CZXN0IFNwZWFrZXIgQXdhcmQ8L3RleHQ+PC9zdmc+')">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5EaXN0cmljdCBEZWJhdGU8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZpbGw9IiNjYmQ1ZTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CZXN0IFNwZWFrZXIgQXdhcmQ8L3RleHQ+PC9zdmc+" alt="Debate">
-          <div class="gallery-caption">District Debate Champion</div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbnRybyB0byBDb21wdXRlciBTY2llbmNlPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBmaWxsPSIjY2JkNWUxIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q291cnNlIENlcnRpZmljYXRpb248L3RleHQ+PC9zdmc+')">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbnRybyB0byBDb21wdXRlciBTY2llbmNlPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBmaWxsPSIjY2JkNWUxIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q291cnNlIENlcnRpZmljYXRpb248L3RleHQ+PC9zdmc+" alt="CS Course">
-          <div class="gallery-caption">CS101 Certification</div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Db21tdW5pdHkgU2VydmljZTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjU1JSIgZmlsbD0iI2NiZDVlMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjEwMCsgSG91cnMgVm9sdW50ZWVyPC90ZXh0Pjwvc3ZnPg==')">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzMzVhIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNzYwIiBoZWlnaHQ9IjU2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQ3YTRhIiBzdHJva2Utd2lkdGg9IjEwIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZpbGw9IiNmZmYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Db21tdW5pdHkgU2VydmljZTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjU1JSIgZmlsbD0iI2NiZDVlMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjEwMCsgSG91cnMgVm9sdW50ZWVyPC90ZXh0Pjwvc3ZnPg==" alt="Volunteer">
-          <div class="gallery-caption">Community Service Award</div>
-        </div>
-      </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn btn-sm" onclick="sendChat()">Send</button>
     </div>
-  </section>
+  </div>
+  <button class="chat-toggle" onclick="toggleChat()" title="Chat with AI">💬</button>
+</div>
 
-  <!-- Lightbox Container -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <img id="lightbox-img" src="" alt="Expanded Certificate" onclick="event.stopPropagation()">
+<!-- ADMIN LOGIN MODAL -->
+<div id="adminLoginOverlay" class="active">
+  <div class="admin-login-card" style="position:relative;">
+    <button class="admin-login-close" onclick="closeAdminLogin()">×</button>
+    <div style="text-align:center;font-size:2.5rem;margin-bottom:1rem;">🔐</div>
+    <h2>Admin Login</h2>
+    <p>Access is restricted to authorized administrators only.</p>
+    <div class="form-group">
+      <label style="display:block;margin-bottom:0.4rem;font-size:0.85rem;color:var(--text-muted);">Email</label>
+      <input type="email" id="adminEmail" class="form-control" placeholder="admin@example.com" value="">
+    </div>
+    <div class="form-group" style="position:relative;">
+      <label style="display:block;margin-bottom:0.4rem;font-size:0.85rem;color:var(--text-muted);">Password</label>
+      <input type="password" id="adminPassword" class="form-control" placeholder="••••••••" onkeydown="if(event.key==='Enter')attemptAdminLogin()">
+      <button onclick="togglePwVis()" style="position:absolute;right:0.75rem;top:2rem;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;" id="pwToggle">👁</button>
+    </div>
+    <div class="login-error" id="loginError">Invalid credentials. Please try again.</div>
+    <button class="btn" style="width:100%;margin-top:0.75rem;" onclick="attemptAdminLogin()">Login to Dashboard</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-logo">Harsh<span>.</span>Admin</div>
+      <div class="admin-badge-label">⚡ ADMIN PANEL</div>
+    </div>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">Main</div>
+      <button class="admin-nav-item active" onclick="showAdminPage('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</button>
+      <div class="admin-nav-section">Manage</div>
+      <button class="admin-nav-item" onclick="showAdminPage('students',this)"><span class="nav-icon">👨‍🎓</span> Student Management</button>
+      <button class="admin-nav-item" onclick="showAdminPage('courses',this)"><span class="nav-icon">📚</span> Course Management</button>
+      <button class="admin-nav-item" onclick="showAdminPage('centers',this)"><span class="nav-icon">🏫</span> Center Management</button>
+      <button class="admin-nav-item" onclick="showAdminPage('print',this)"><span class="nav-icon">🖨️</span> Print Management</button>
+      <button class="admin-nav-item" onclick="showAdminPage('transactions',this)"><span class="nav-icon">₹</span> Trans. Management</button>
+      <div class="admin-nav-section">Website</div>
+      <button class="admin-nav-item" onclick="showAdminPage('website',this)"><span class="nav-icon">🌐</span> Website Management</button>
+      <button class="admin-nav-item" onclick="showAdminPage('studymat',this)"><span class="nav-icon">📖</span> Study Material</button>
+      <button class="admin-nav-item" onclick="showAdminPage('exams',this)"><span class="nav-icon">📝</span> Online Exam</button>
+      <button class="admin-nav-item" onclick="showAdminPage('complaints',this)"><span class="nav-icon">💬</span> Complaint Request</button>
+      <div class="admin-nav-section">Config</div>
+      <button class="admin-nav-item" onclick="showAdminPage('notices',this)"><span class="nav-icon">📢</span> Notices & Alerts</button>
+      <button class="admin-nav-item" onclick="showAdminPage('settings',this)"><span class="nav-icon">⚙️</span> Settings</button>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <button class="btn btn-danger btn-sm" style="width:100%;" onclick="logoutAdmin()">🚪 Logout</button>
+    </div>
   </div>
 
-  <section id="resources" class="section">
-    <div class="container">
-      <h2>Class 12 Resources</h2>
-      <p>My compiled study materials and notes organized by subject.</p>
-      
-      <input type="text" id="resourceSearch" class="search-bar" placeholder="Search topics, chapters, or keywords...">
+  <div class="admin-main">
+    <!-- DASHBOARD -->
+    <div class="admin-page active" id="page-dashboard">
+      <div class="admin-topbar">
+        <div><h1>Dashboard</h1><p>Welcome back, Admin! Here's an overview.</p></div>
+        <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);" id="adminClock"></div>
+      </div>
+      <div class="stat-cards-grid">
+        <div class="stat-widget"><span class="stat-widget-icon">👨‍🎓</span><div class="stat-widget-num" id="dTotal">12</div><div class="stat-widget-label">Total Students</div></div>
+        <div class="stat-widget"><span class="stat-widget-icon">📚</span><div class="stat-widget-num">5</div><div class="stat-widget-label">Active Courses</div></div>
+        <div class="stat-widget"><span class="stat-widget-icon">🏫</span><div class="stat-widget-num">3</div><div class="stat-widget-label">Centers</div></div>
+        <div class="stat-widget"><span class="stat-widget-icon">📢</span><div class="stat-widget-num" id="dNotices">3</div><div class="stat-widget-label">Active Notices</div></div>
+        <div class="stat-widget"><span class="stat-widget-icon">💬</span><div class="stat-widget-num" id="dComplaints">2</div><div class="stat-widget-label">Complaints</div></div>
+        <div class="stat-widget"><span class="stat-widget-icon">📝</span><div class="stat-widget-num">4</div><div class="stat-widget-label">Exams</div></div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-color);border-radius:1rem;padding:1.5rem;">
+        <h3 style="margin-bottom:1rem;font-size:1rem;color:var(--text-muted);">Recent Activity</h3>
+        <div id="activityFeed" style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><span style="color:var(--accent-green);">●</span><span style="color:var(--text-muted);">2m ago</span> New student "Priya Sharma" registered</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><span style="color:#fbbf24;">●</span><span style="color:var(--text-muted);">15m ago</span> Complaint received from Ankit Kumar</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><span style="color:var(--accent-cyan);">●</span><span style="color:var(--text-muted);">1h ago</span> Study material "Physics Notes" uploaded</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><span style="color:var(--accent-green);">●</span><span style="color:var(--text-muted);">3h ago</span> Online Exam "Math Test" created</div>
+        </div>
+      </div>
+    </div>
 
-      <div class="accordion" id="resourceAccordion">
-        <!-- Math -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleAccordion(this)">
-            Mathematics <span>+</span>
-          </button>
-          <div class="accordion-content">
-            <div class="resource-link">📄 <span class="res-title">Calculus Formula Sheet (Complete)</span></div>
-            <div class="resource-link">📄 <span class="res-title">Probability Important Questions Bank</span></div>
-            <div class="resource-link">🎥 <span class="res-title">3D Geometry Revision Lecture</span></div>
+    <!-- STUDENTS -->
+    <div class="admin-page" id="page-students">
+      <div class="admin-topbar"><div><h1>Student Management</h1><p>Add, edit and manage student records.</p></div>
+        <button class="btn btn-sm" onclick="showStudentForm()">+ Add Student</button>
+      </div>
+      <div id="studentFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;" id="studentFormTitle">Add New Student</h3>
+          <input type="hidden" id="editStudentIdx" value="">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name</label><input class="form-control" id="sName" placeholder="Student name"></div>
+            <div class="form-group"><label>Roll Number</label><input class="form-control" id="sRoll" placeholder="e.g. 2024001"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Course</label><input class="form-control" id="sCourse" placeholder="e.g. PCM Class 12"></div>
+            <div class="form-group"><label>Center</label><input class="form-control" id="sCenter" placeholder="e.g. New Delhi"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Email</label><input type="email" class="form-control" id="sEmail" placeholder="student@email.com"></div>
+            <div class="form-group"><label>Phone</label><input class="form-control" id="sPhone" placeholder="+91 XXXXXXXXXX"></div>
+          </div>
+          <div class="form-group"><label>Status</label>
+            <select class="form-control" id="sStatus"><option value="active">Active</option><option value="pending">Pending</option><option value="inactive">Inactive</option></select>
+          </div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveStudent()">Save Student</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('studentFormWrap').style.display='none'">Cancel</button>
           </div>
         </div>
-        <!-- Physics -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleAccordion(this)">
-            Physics <span>+</span>
-          </button>
-          <div class="accordion-content">
-            <div class="resource-link">📄 <span class="res-title">Electromagnetism Handwritten Notes</span></div>
-            <div class="resource-link">📄 <span class="res-title">Optics Derivations PDF</span></div>
-            <div class="resource-link">🎥 <span class="res-title">Modern Physics Concept Map</span></div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Name</th><th>Roll No.</th><th>Course</th><th>Center</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COURSES -->
+    <div class="admin-page" id="page-courses">
+      <div class="admin-topbar"><div><h1>Course Management</h1><p>Manage all available courses.</p></div>
+        <button class="btn btn-sm" onclick="showCourseForm()">+ Add Course</button>
+      </div>
+      <div id="courseFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;">Add / Edit Course</h3>
+          <input type="hidden" id="editCourseIdx">
+          <div class="form-row">
+            <div class="form-group"><label>Course Name</label><input class="form-control" id="cName2" placeholder="e.g. Class 12 Science"></div>
+            <div class="form-group"><label>Duration</label><input class="form-control" id="cDuration" placeholder="e.g. 1 Year"></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea class="form-control" id="cDesc" placeholder="Course description..."></textarea></div>
+          <div class="form-group"><label>Status</label>
+            <select class="form-control" id="cStatus2"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+          </div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveCourse()">Save Course</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('courseFormWrap').style.display='none'">Cancel</button>
           </div>
         </div>
-        <!-- Chemistry -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleAccordion(this)">
-            Chemistry <span>+</span>
-          </button>
-          <div class="accordion-content">
-            <div class="resource-link">📄 <span class="res-title">Organic Name Reactions Summary</span></div>
-            <div class="resource-link">📄 <span class="res-title">Electrochemistry Numerical Guide</span></div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Course Name</th><th>Duration</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="courseTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CENTERS -->
+    <div class="admin-page" id="page-centers">
+      <div class="admin-topbar"><div><h1>Center Management</h1><p>Manage study centers.</p></div>
+        <button class="btn btn-sm" onclick="showCenterForm()">+ Add Center</button>
+      </div>
+      <div id="centerFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;">Add / Edit Center</h3>
+          <input type="hidden" id="editCenterIdx">
+          <div class="form-row">
+            <div class="form-group"><label>Center Name</label><input class="form-control" id="ctName" placeholder="e.g. New Delhi Center"></div>
+            <div class="form-group"><label>Location</label><input class="form-control" id="ctLocation" placeholder="e.g. Connaught Place"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Capacity</label><input class="form-control" id="ctCapacity" placeholder="e.g. 50"></div>
+            <div class="form-group"><label>Contact</label><input class="form-control" id="ctContact" placeholder="+91 XXXXXXXXXX"></div>
+          </div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveCenter()">Save Center</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('centerFormWrap').style.display='none'">Cancel</button>
           </div>
         </div>
-        <!-- Biology -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleAccordion(this)">
-            Biology <span>+</span>
-          </button>
-          <div class="accordion-content">
-            <div class="resource-link">📄 <span class="res-title">Genetics Mind Maps</span></div>
-            <div class="resource-link">📄 <span class="res-title">Human Physiology NCERT Highlights</span></div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Center Name</th><th>Location</th><th>Capacity</th><th>Contact</th><th>Actions</th></tr></thead>
+          <tbody id="centerTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRINT MANAGEMENT -->
+    <div class="admin-page" id="page-print">
+      <div class="admin-topbar"><div><h1>Print Management</h1><p>Generate ID cards, certificates and admit cards.</p></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;">
+        <div class="stat-widget" style="cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="showToast('ID Card print job queued!')">
+          <span class="stat-widget-icon">🪪</span>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem;">Print ID Cards</div>
+          <div class="stat-widget-label">Generate ID cards for all active students</div>
+          <button class="btn btn-sm" style="margin-top:1rem;" onclick="event.stopPropagation();showToast('ID Cards generating...')">Generate</button>
+        </div>
+        <div class="stat-widget" style="cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="showToast('Certificates queued for print!')">
+          <span class="stat-widget-icon">🏆</span>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem;">Print Certificates</div>
+          <div class="stat-widget-label">Generate completion certificates for students</div>
+          <button class="btn btn-sm" style="margin-top:1rem;" onclick="event.stopPropagation();showToast('Certificates generating...')">Generate</button>
+        </div>
+        <div class="stat-widget" style="cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="showToast('Admit cards queued!')">
+          <span class="stat-widget-icon">📋</span>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem;">Admit Cards</div>
+          <div class="stat-widget-label">Generate exam admit cards for registered students</div>
+          <button class="btn btn-sm" style="margin-top:1rem;" onclick="event.stopPropagation();showToast('Admit cards generating...')">Generate</button>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-icon">📊</span>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem;">Result Reports</div>
+          <div class="stat-widget-label">Print student result sheets and mark lists</div>
+          <button class="btn btn-sm" style="margin-top:1rem;" onclick="showToast('Result reports generating...')">Generate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="admin-page" id="page-transactions">
+      <div class="admin-topbar"><div><h1>Transaction Management</h1><p>View and manage all financial transactions.</p></div>
+        <button class="btn btn-sm" onclick="showTxnForm()">+ Add Transaction</button>
+      </div>
+      <div id="txnFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;">Add Transaction</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Student Name</label><input class="form-control" id="txnStudent" placeholder="Name"></div>
+            <div class="form-group"><label>Amount (₹)</label><input class="form-control" type="number" id="txnAmount" placeholder="0.00"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Type</label>
+              <select class="form-control" id="txnType"><option>Fee Payment</option><option>Registration</option><option>Exam Fee</option><option>Refund</option></select>
+            </div>
+            <div class="form-group"><label>Status</label>
+              <select class="form-control" id="txnStatus2"><option value="active">Completed</option><option value="pending">Pending</option></select>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveTxn()">Save</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('txnFormWrap').style.display='none'">Cancel</button>
           </div>
         </div>
-        <!-- English -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleAccordion(this)">
-            English <span>+</span>
-          </button>
-          <div class="accordion-content">
-            <div class="resource-link">📄 <span class="res-title">Literature Section Summaries</span></div>
-            <div class="resource-link">📄 <span class="res-title">Advanced Writing Skills Formats</span></div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Student</th><th>Amount</th><th>Type</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="txnTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WEBSITE MANAGEMENT -->
+    <div class="admin-page" id="page-website">
+      <div class="admin-topbar"><div><h1>Website Management</h1><p>Edit website content and settings.</p></div></div>
+      <div style="display:grid;gap:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Hero Section</h3>
+          <div class="form-group"><label>Hero Subtitle</label><input class="form-control" id="wHeroSub" value="Class 12 Science Student"></div>
+          <div class="form-group"><label>Hero Headline</label><input class="form-control" id="wHeroH1" value="Preparing for Excellence"></div>
+          <div class="form-group"><label>Hero Description</label><textarea class="form-control" id="wHeroDesc">Aspiring civil servant documenting my academic journey and sharing curated resources for competitive exams.</textarea></div>
+          <button class="btn btn-sm" onclick="applyWebsiteChanges()">Apply Changes</button>
+        </div>
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Stats</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Awards Count</label><input class="form-control" id="wStat1" value="3+"></div>
+            <div class="form-group"><label>Certifications Count</label><input class="form-control" id="wStat2" value="5"></div>
+            <div class="form-group"><label>Resources Count</label><input class="form-control" id="wStat3" value="50+"></div>
+          </div>
+          <button class="btn btn-sm" onclick="applyStats()">Update Stats</button>
+        </div>
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Contact Info</h3>
+          <div class="form-group"><label>Email</label><input class="form-control" value="hg20046@gmail.com" id="wEmail"></div>
+          <div class="form-group"><label>Location</label><input class="form-control" value="New Delhi, India" id="wLocation"></div>
+          <button class="btn btn-sm" onclick="showToast('Contact info updated!')">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDY MATERIAL -->
+    <div class="admin-page" id="page-studymat">
+      <div class="admin-topbar"><div><h1>Study Material</h1><p>Upload and manage study resources.</p></div>
+        <button class="btn btn-sm" onclick="showMatForm()">+ Upload Material</button>
+      </div>
+      <div id="matFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;">Upload Study Material</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Title</label><input class="form-control" id="matTitle" placeholder="e.g. Calculus Notes"></div>
+            <div class="form-group"><label>Subject</label>
+              <select class="form-control" id="matSubject"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option></select>
+            </div>
+          </div>
+          <div class="form-group"><label>Type</label>
+            <select class="form-control" id="matType"><option>📄 PDF Notes</option><option>🎥 Video Lecture</option><option>📝 Question Bank</option><option>🗺️ Mind Map</option></select>
+          </div>
+          <div class="form-group"><label>File / URL</label><input class="form-control" id="matFile" placeholder="Paste URL or file path"></div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveMaterial()">Upload</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('matFormWrap').style.display='none'">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Title</th><th>Subject</th><th>Type</th><th>Added</th><th>Actions</th></tr></thead>
+          <tbody id="matTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ONLINE EXAM -->
+    <div class="admin-page" id="page-exams">
+      <div class="admin-topbar"><div><h1>Online Exam</h1><p>Create and manage exams.</p></div>
+        <button class="btn btn-sm" onclick="showExamForm()">+ Create Exam</button>
+      </div>
+      <div id="examFormWrap" style="display:none;margin-bottom:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1.5rem;font-size:1rem;">Create New Exam</h3>
+          <input type="hidden" id="editExamIdx">
+          <div class="form-row">
+            <div class="form-group"><label>Exam Title</label><input class="form-control" id="examTitle" placeholder="e.g. Math Final Test"></div>
+            <div class="form-group"><label>Subject</label><input class="form-control" id="examSubject" placeholder="e.g. Mathematics"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Date</label><input type="date" class="form-control" id="examDate"></div>
+            <div class="form-group"><label>Duration (mins)</label><input type="number" class="form-control" id="examDuration" placeholder="60"></div>
+          </div>
+          <div class="form-group"><label>Total Marks</label><input type="number" class="form-control" id="examMarks" placeholder="100"></div>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+            <button class="btn btn-sm" onclick="saveExam()">Save Exam</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('examFormWrap').style.display='none'">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Exam Title</th><th>Subject</th><th>Date</th><th>Duration</th><th>Marks</th><th>Actions</th></tr></thead>
+          <tbody id="examTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMPLAINTS -->
+    <div class="admin-page" id="page-complaints">
+      <div class="admin-topbar"><div><h1>Complaint Requests</h1><p>View and resolve incoming complaints.</p></div></div>
+      <div id="complaintsList">
+        <div class="complaint-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <h4>Study Material Not Accessible</h4>
+              <div class="complaint-meta">From: Ankit Kumar &nbsp;|&nbsp; April 12, 2026</div>
+              <p style="margin-bottom:0.75rem;">The Physics notes PDF link returns a 404 error. Please fix.</p>
+            </div>
+            <span class="status-pill status-pending">Pending</span>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="btn btn-sm" onclick="resolveComplaint(this)">✓ Resolve</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Reply sent!')">Reply</button>
+          </div>
+        </div>
+        <div class="complaint-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <h4>Certificate Not Received</h4>
+              <div class="complaint-meta">From: Priya Sharma &nbsp;|&nbsp; April 10, 2026</div>
+              <p style="margin-bottom:0.75rem;">I completed the course 2 months ago but haven't received my certificate yet.</p>
+            </div>
+            <span class="status-pill status-pending">Pending</span>
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="btn btn-sm" onclick="resolveComplaint(this)">✓ Resolve</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Reply sent!')">Reply</button>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <section id="contact" class="section">
-    <div class="container">
-      <div class="contact-container">
-        <div>
-          <h2>Get in Touch</h2>
-          <p>Whether you're a fellow student, educator, or mentor, I'd love to connect. Use the form to send me a direct message.</p>
-          <div style="margin-top: 2rem;">
-            <p>📧 Email: contact@harshgupta.edu</p>
-            <p>📍 Location: New Delhi, India</p>
+    <!-- NOTICES -->
+    <div class="admin-page" id="page-notices">
+      <div class="admin-topbar"><div><h1>Notices & Alerts</h1><p>Post notices visible on the website.</p></div></div>
+      <div class="admin-form" style="margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:1rem;font-size:1rem;">Post New Notice</h3>
+        <div class="form-group"><label>Notice Title</label><input class="form-control" id="noticeTitle" placeholder="e.g. Exam Schedule Released"></div>
+        <div class="form-group"><label>Notice Content</label><textarea class="form-control" id="noticeContent" placeholder="Full notice text..."></textarea></div>
+        <button class="btn btn-sm" onclick="addNotice()">Post Notice</button>
+      </div>
+      <div id="noticesList">
+        <div class="notice-item"><div class="notice-text"><strong>Exam Schedule Released</strong><p style="margin:0.25rem 0 0;font-size:0.85rem;color:var(--text-muted);">Final exams scheduled for May 2026</p></div><span class="notice-date">Apr 13</span><button class="btn btn-danger btn-sm" onclick="this.closest('.notice-item').remove();updateDashboard()">Delete</button></div>
+        <div class="notice-item"><div class="notice-text"><strong>New Course Launched</strong><p style="margin:0.25rem 0 0;font-size:0.85rem;color:var(--text-muted);">Advanced Mathematics batch starting soon</p></div><span class="notice-date">Apr 10</span><button class="btn btn-danger btn-sm" onclick="this.closest('.notice-item').remove();updateDashboard()">Delete</button></div>
+        <div class="notice-item"><div class="notice-text"><strong>Holiday Notice</strong><p style="margin:0.25rem 0 0;font-size:0.85rem;color:var(--text-muted);">Center closed on April 14 for Baisakhi</p></div><span class="notice-date">Apr 8</span><button class="btn btn-danger btn-sm" onclick="this.closest('.notice-item').remove();updateDashboard()">Delete</button></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-page" id="page-settings">
+      <div class="admin-topbar"><div><h1>Settings</h1><p>Manage account and system settings.</p></div></div>
+      <div style="display:grid;gap:1.5rem;">
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Account Settings</h3>
+          <div class="form-group"><label>Admin Email</label><input class="form-control" value="hg20046@gmail.com" id="settEmail"></div>
+          <div class="form-group"><label>Display Name</label><input class="form-control" value="Harsh Gupta" id="settName"></div>
+          <button class="btn btn-sm" onclick="showToast('Account settings saved!')">Save Changes</button>
+        </div>
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Change Password</h3>
+          <div class="form-group"><label>Current Password</label><input type="password" class="form-control" placeholder="Current password"></div>
+          <div class="form-group"><label>New Password</label><input type="password" class="form-control" placeholder="New password"></div>
+          <div class="form-group"><label>Confirm Password</label><input type="password" class="form-control" placeholder="Confirm new password"></div>
+          <button class="btn btn-sm" onclick="showToast('Password updated!')">Update Password</button>
+        </div>
+        <div class="admin-form">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Website Settings</h3>
+          <div class="form-group"><label>Site Title</label><input class="form-control" value="Harsh Gupta - Portfolio"></div>
+          <div class="form-group" style="display:flex;align-items:center;gap:1rem;">
+            <label style="margin:0;">Chatbot Active</label>
+            <input type="checkbox" checked id="chatbotToggle" style="width:18px;height:18px;accent-color:var(--accent-green);">
           </div>
-        </div>
-        <div>
-          <form id="contactForm" onsubmit="handleContactSubmit(event)">
-            <div class="form-group">
-              <label for="name" style="display:block; margin-bottom:0.5rem;">Full Name</label>
-              <input type="text" id="name" class="form-control" required placeholder="Jane Doe">
-            </div>
-            <div class="form-group">
-              <label for="email" style="display:block; margin-bottom:0.5rem;">Email Address</label>
-              <input type="email" id="email" class="form-control" required placeholder="jane@example.com">
-            </div>
-            <div class="form-group">
-              <label for="message" style="display:block; margin-bottom:0.5rem;">Message</label>
-              <textarea id="message" class="form-control" required placeholder="Your message here..."></textarea>
-            </div>
-            <button type="submit" class="btn" style="width: 100%;">Send Message</button>
-            <div id="formMessage">Thanks for reaching out! I'll get back to you soon.</div>
-          </form>
+          <div class="form-group" style="display:flex;align-items:center;gap:1rem;">
+            <label style="margin:0;">Maintenance Mode</label>
+            <input type="checkbox" id="maintToggle" style="width:18px;height:18px;accent-color:var(--accent-green);">
+          </div>
+          <button class="btn btn-sm" onclick="showToast('Website settings saved!')">Save</button>
         </div>
       </div>
     </div>
-  </section>
+  </div><!-- end admin-main -->
+</div><!-- end adminPanel -->
 
-  <footer>
-    <div class="container">
-      <h3 style="color: var(--text-light); margin-bottom: 0.5rem;">Harsh Gupta</h3>
-      <p style="margin-bottom: 0; font-size: 0.875rem;">© 2026 Harsh Gupta Portfolio. All rights reserved.</p>
-    </div>
-  </footer>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-  <!-- Chat Widget -->
-  <div class="chat-widget">
-    <div class="chat-box" id="chatBox">
-      <div class="chat-header">Chat with Harsh (Bot)</div>
-      <div class="chat-body" id="chatBody">
-        <div class="chat-message">Hi! I'm Harsh's virtual assistant. How can I help you today?</div>
-      </div>
-      <form class="chat-input-area" onsubmit="handleChatSubmit(event)">
-        <input type="text" id="chatInput" placeholder="Type a message..." required>
-        <button type="submit" class="btn" style="padding: 0.5rem 1rem;">Send</button>
-      </form>
-    </div>
-    <button class="chat-toggle" onclick="toggleChat()">💬</button>
-  </div>
+<script>
+// ========== DATA STORES ==========
+let students = [
+  {name:'Harsh Gupta',roll:'2024001',course:'PCM Class 12',center:'New Delhi',email:'hg20046@gmail.com',phone:'+91 9876543210',status:'active'},
+  {name:'Priya Sharma',roll:'2024002',course:'PCM Class 12',center:'New Delhi',email:'priya@email.com',phone:'+91 9876543211',status:'active'},
+  {name:'Ankit Kumar',roll:'2024003',course:'PCB Class 12',center:'Gurgaon',email:'ankit@email.com',phone:'+91 9876543212',status:'pending'},
+];
+let courses = [
+  {name:'PCM Class 12',duration:'1 Year',desc:'Physics, Chemistry, Mathematics for board exams',status:'active'},
+  {name:'PCB Class 12',duration:'1 Year',desc:'Physics, Chemistry, Biology for NEET aspirants',status:'active'},
+  {name:'Commerce Class 12',duration:'1 Year',desc:'Accounts, Business Studies, Economics',status:'active'},
+  {name:'UPSC Foundation',duration:'2 Years',desc:'Complete UPSC civil services preparation',status:'active'},
+  {name:'Computer Science',duration:'6 Months',desc:'Programming fundamentals and data structures',status:'inactive'},
+];
+let centers = [
+  {name:'New Delhi Center',location:'Connaught Place',capacity:'60',contact:'+91 9876540001'},
+  {name:'Gurgaon Center',location:'Cyber Hub',capacity:'40',contact:'+91 9876540002'},
+  {name:'Noida Center',location:'Sector 18',capacity:'35',contact:'+91 9876540003'},
+];
+let transactions = [
+  {student:'Harsh Gupta',amount:'12000',type:'Fee Payment',date:'Apr 13, 2026',status:'active'},
+  {student:'Priya Sharma',amount:'12000',type:'Registration',date:'Apr 10, 2026',status:'active'},
+  {student:'Ankit Kumar',amount:'5000',type:'Exam Fee',date:'Apr 8, 2026',status:'pending'},
+];
+let materials = [
+  {title:'Calculus Formula Sheet',subject:'Mathematics',type:'📄 PDF Notes',added:'Apr 12, 2026'},
+  {title:'Electromagnetism Notes',subject:'Physics',type:'📄 PDF Notes',added:'Apr 10, 2026'},
+  {title:'Organic Reactions',subject:'Chemistry',type:'🗺️ Mind Map',added:'Apr 9, 2026'},
+];
+let exams = [
+  {title:'Math Final Test',subject:'Mathematics',date:'May 5, 2026',duration:'120',marks:'100'},
+  {title:'Physics Unit Test',subject:'Physics',date:'May 8, 2026',duration:'90',marks:'75'},
+  {title:'Chemistry Board Practice',subject:'Chemistry',date:'May 12, 2026',duration:'180',marks:'100'},
+];
 
-  <script>
-    // Mobile Menu Toggle
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.getElementById('navLinks');
-    
-    mobileBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
+// ========== ADMIN AUTH ==========
+const ADMIN_EMAIL = 'hg20046@gmail.com';
+const ADMIN_PASS = '@harsh06';
+
+function openAdminLogin(e) { e.preventDefault(); document.getElementById('adminLoginOverlay').classList.add('active'); }
+function closeAdminLogin() { document.getElementById('adminLoginOverlay').classList.remove('active'); }
+function togglePwVis() {
+  const pw = document.getElementById('adminPassword');
+  pw.type = pw.type === 'password' ? 'text' : 'password';
+}
+function attemptAdminLogin() {
+  const email = document.getElementById('adminEmail').value.trim();
+  const pass = document.getElementById('adminPassword').value;
+  const err = document.getElementById('loginError');
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+    err.style.display = 'none';
+    closeAdminLogin();
+    openAdminPanel();
+  } else {
+    err.style.display = 'block';
+  }
+}
+function openAdminPanel() {
+  document.getElementById('adminPanel').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderAllTables();
+  updateDashboard();
+  startClock();
+}
+function logoutAdmin() {
+  document.getElementById('adminPanel').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ========== ADMIN NAV ==========
+function showAdminPage(id, btn) {
+  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ========== CLOCK ==========
+function startClock() {
+  const el = document.getElementById('adminClock');
+  if (!el) return;
+  const tick = () => { el.textContent = new Date().toLocaleString('en-IN'); };
+  tick(); setInterval(tick, 1000);
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ========== DASHBOARD ==========
+function updateDashboard() {
+  const el = id => document.getElementById(id);
+  if(el('dTotal')) el('dTotal').textContent = students.length;
+  if(el('dNotices')) el('dNotices').textContent = document.querySelectorAll('#noticesList .notice-item').length;
+  if(el('dComplaints')) el('dComplaints').textContent = document.querySelectorAll('#complaintsList .status-pending').length;
+}
+
+// ========== STUDENTS ==========
+function showStudentForm(idx) {
+  const w = document.getElementById('studentFormWrap');
+  w.style.display = 'block';
+  const title = document.getElementById('studentFormTitle');
+  if (idx !== undefined) {
+    const s = students[idx];
+    document.getElementById('sName').value = s.name;
+    document.getElementById('sRoll').value = s.roll;
+    document.getElementById('sCourse').value = s.course;
+    document.getElementById('sCenter').value = s.center;
+    document.getElementById('sEmail').value = s.email;
+    document.getElementById('sPhone').value = s.phone;
+    document.getElementById('sStatus').value = s.status;
+    document.getElementById('editStudentIdx').value = idx;
+    title.textContent = 'Edit Student';
+  } else {
+    document.getElementById('editStudentIdx').value = '';
+    ['sName','sRoll','sCourse','sCenter','sEmail','sPhone'].forEach(id => document.getElementById(id).value='');
+    title.textContent = 'Add New Student';
+  }
+  w.scrollIntoView({behavior:'smooth'});
+}
+function saveStudent() {
+  const idx = document.getElementById('editStudentIdx').value;
+  const s = {
+    name: document.getElementById('sName').value,
+    roll: document.getElementById('sRoll').value,
+    course: document.getElementById('sCourse').value,
+    center: document.getElementById('sCenter').value,
+    email: document.getElementById('sEmail').value,
+    phone: document.getElementById('sPhone').value,
+    status: document.getElementById('sStatus').value,
+  };
+  if (!s.name) { showToast('Name is required!'); return; }
+  if (idx !== '') students[parseInt(idx)] = s;
+  else students.push(s);
+  renderStudents();
+  document.getElementById('studentFormWrap').style.display = 'none';
+  showToast('Student saved!');
+  updateDashboard();
+}
+function deleteStudent(idx) { students.splice(idx,1); renderStudents(); showToast('Student deleted!'); updateDashboard(); }
+function renderStudents() {
+  const tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = students.map((s,i) => `
+    <tr>
+      <td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td>
+      <td style="font-weight:600;">${s.name}</td>
+      <td style="font-family:var(--font-mono);">${s.roll}</td>
+      <td>${s.course}</td>
+      <td>${s.center}</td>
+      <td><span class="status-pill status-${s.status}">${s.status}</span></td>
+      <td><button class="btn btn-sm" onclick="showStudentForm(${i})" style="margin-right:0.4rem;">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteStudent(${i})">Del</button></td>
+    </tr>`).join('');
+}
+
+// ========== COURSES ==========
+function showCourseForm(idx) {
+  const w = document.getElementById('courseFormWrap'); w.style.display='block';
+  if(idx!==undefined){ const c=courses[idx]; document.getElementById('cName2').value=c.name; document.getElementById('cDuration').value=c.duration; document.getElementById('cDesc').value=c.desc; document.getElementById('cStatus2').value=c.status; document.getElementById('editCourseIdx').value=idx; }
+  else { ['cName2','cDuration','cDesc'].forEach(id=>document.getElementById(id).value=''); document.getElementById('editCourseIdx').value=''; }
+}
+function saveCourse() {
+  const idx = document.getElementById('editCourseIdx').value;
+  const c = {name:document.getElementById('cName2').value,duration:document.getElementById('cDuration').value,desc:document.getElementById('cDesc').value,status:document.getElementById('cStatus2').value};
+  if(!c.name){showToast('Name required!');return;}
+  if(idx!=='')courses[parseInt(idx)]=c; else courses.push(c);
+  renderCourses(); document.getElementById('courseFormWrap').style.display='none'; showToast('Course saved!');
+}
+function deleteCourse(idx){courses.splice(idx,1);renderCourses();showToast('Course deleted!');}
+function renderCourses(){
+  document.getElementById('courseTableBody').innerHTML=courses.map((c,i)=>`<tr><td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td><td style="font-weight:600;">${c.name}</td><td>${c.duration}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;">${c.desc}</td><td><span class="status-pill status-${c.status}">${c.status}</span></td><td><button class="btn btn-sm" onclick="showCourseForm(${i})" style="margin-right:0.4rem;">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteCourse(${i})">Del</button></td></tr>`).join('');
+}
+
+// ========== CENTERS ==========
+function showCenterForm(idx){
+  const w=document.getElementById('centerFormWrap');w.style.display='block';
+  if(idx!==undefined){const c=centers[idx];document.getElementById('ctName').value=c.name;document.getElementById('ctLocation').value=c.location;document.getElementById('ctCapacity').value=c.capacity;document.getElementById('ctContact').value=c.contact;document.getElementById('editCenterIdx').value=idx;}
+  else{['ctName','ctLocation','ctCapacity','ctContact'].forEach(id=>document.getElementById(id).value='');document.getElementById('editCenterIdx').value='';}
+}
+function saveCenter(){
+  const idx=document.getElementById('editCenterIdx').value;
+  const c={name:document.getElementById('ctName').value,location:document.getElementById('ctLocation').value,capacity:document.getElementById('ctCapacity').value,contact:document.getElementById('ctContact').value};
+  if(!c.name){showToast('Name required!');return;}
+  if(idx!=='')centers[parseInt(idx)]=c;else centers.push(c);
+  renderCenters();document.getElementById('centerFormWrap').style.display='none';showToast('Center saved!');
+}
+function deleteCenter(idx){centers.splice(idx,1);renderCenters();showToast('Center deleted!');}
+function renderCenters(){
+  document.getElementById('centerTableBody').innerHTML=centers.map((c,i)=>`<tr><td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td><td style="font-weight:600;">${c.name}</td><td>${c.location}</td><td>${c.capacity}</td><td>${c.contact}</td><td><button class="btn btn-sm" onclick="showCenterForm(${i})" style="margin-right:0.4rem;">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteCenter(${i})">Del</button></td></tr>`).join('');
+}
+
+// ========== TRANSACTIONS ==========
+function showTxnForm(){document.getElementById('txnFormWrap').style.display='block';}
+function saveTxn(){
+  const t={student:document.getElementById('txnStudent').value,amount:document.getElementById('txnAmount').value,type:document.getElementById('txnType').value,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),status:document.getElementById('txnStatus2').value};
+  if(!t.student){showToast('Student name required!');return;}
+  transactions.push(t);renderTransactions();document.getElementById('txnFormWrap').style.display='none';showToast('Transaction saved!');
+}
+function deleteTxn(idx){transactions.splice(idx,1);renderTransactions();showToast('Transaction deleted!');}
+function renderTransactions(){
+  document.getElementById('txnTableBody').innerHTML=transactions.map((t,i)=>`<tr><td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td><td style="font-weight:600;">${t.student}</td><td style="font-family:var(--font-mono);color:var(--accent-green);">₹${t.amount}</td><td>${t.type}</td><td style="font-family:var(--font-mono);font-size:0.8rem;">${t.date}</td><td><span class="status-pill status-${t.status}">${t.status==='active'?'Completed':'Pending'}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteTxn(${i})">Del</button></td></tr>`).join('');
+}
+
+// ========== MATERIALS ==========
+function showMatForm(){document.getElementById('matFormWrap').style.display='block';}
+function saveMaterial(){
+  const m={title:document.getElementById('matTitle').value,subject:document.getElementById('matSubject').value,type:document.getElementById('matType').value,added:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})};
+  if(!m.title){showToast('Title required!');return;}
+  materials.push(m);renderMaterials();document.getElementById('matFormWrap').style.display='none';showToast('Material uploaded!');
+}
+function deleteMaterial(idx){materials.splice(idx,1);renderMaterials();showToast('Material deleted!');}
+function renderMaterials(){
+  document.getElementById('matTableBody').innerHTML=materials.map((m,i)=>`<tr><td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td><td style="font-weight:600;">${m.title}</td><td>${m.subject}</td><td>${m.type}</td><td style="font-family:var(--font-mono);font-size:0.8rem;">${m.added}</td><td><button class="btn btn-danger btn-sm" onclick="deleteMaterial(${i})">Del</button></td></tr>`).join('');
+}
+
+// ========== EXAMS ==========
+function showExamForm(idx){
+  const w=document.getElementById('examFormWrap');w.style.display='block';
+  if(idx!==undefined){const e=exams[idx];document.getElementById('examTitle').value=e.title;document.getElementById('examSubject').value=e.subject;document.getElementById('examDate').value='';document.getElementById('examDuration').value=e.duration;document.getElementById('examMarks').value=e.marks;document.getElementById('editExamIdx').value=idx;}
+  else{['examTitle','examSubject','examDate','examDuration','examMarks'].forEach(id=>document.getElementById(id).value='');document.getElementById('editExamIdx').value='';}
+}
+function saveExam(){
+  const idx=document.getElementById('editExamIdx').value;
+  const e={title:document.getElementById('examTitle').value,subject:document.getElementById('examSubject').value,date:document.getElementById('examDate').value||'TBD',duration:document.getElementById('examDuration').value,marks:document.getElementById('examMarks').value};
+  if(!e.title){showToast('Title required!');return;}
+  if(idx!=='')exams[parseInt(idx)]=e;else exams.push(e);
+  renderExams();document.getElementById('examFormWrap').style.display='none';showToast('Exam saved!');
+}
+function deleteExam(idx){exams.splice(idx,1);renderExams();showToast('Exam deleted!');}
+function renderExams(){
+  document.getElementById('examTableBody').innerHTML=exams.map((e,i)=>`<tr><td style="font-family:var(--font-mono);color:var(--text-muted);">${i+1}</td><td style="font-weight:600;">${e.title}</td><td>${e.subject}</td><td style="font-family:var(--font-mono);font-size:0.8rem;">${e.date}</td><td>${e.duration} mins</td><td>${e.marks}</td><td><button class="btn btn-sm" onclick="showExamForm(${i})" style="margin-right:0.4rem;">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteExam(${i})">Del</button></td></tr>`).join('');
+}
+
+// ========== COMPLAINTS ==========
+function resolveComplaint(btn){
+  const card=btn.closest('.complaint-card');
+  const pill=card.querySelector('.status-pill');
+  pill.className='status-pill status-active';
+  pill.textContent='Resolved';
+  btn.remove();
+  showToast('Complaint resolved!');
+  updateDashboard();
+}
+
+// ========== NOTICES ==========
+function addNotice(){
+  const title=document.getElementById('noticeTitle').value.trim();
+  const content=document.getElementById('noticeContent').value.trim();
+  if(!title){showToast('Title required!');return;}
+  const div=document.createElement('div');
+  div.className='notice-item';
+  div.innerHTML=`<div class="notice-text"><strong>${title}</strong><p style="margin:0.25rem 0 0;font-size:0.85rem;color:var(--text-muted);">${content}</p></div><span class="notice-date">Now</span><button class="btn btn-danger btn-sm" onclick="this.closest('.notice-item').remove();updateDashboard()">Delete</button>`;
+  document.getElementById('noticesList').prepend(div);
+  document.getElementById('noticeTitle').value='';
+  document.getElementById('noticeContent').value='';
+  showToast('Notice posted!');
+  updateDashboard();
+}
+
+// ========== WEBSITE MANAGEMENT ==========
+function applyWebsiteChanges(){
+  document.querySelector('#home .hero-subtitle').textContent = document.getElementById('wHeroSub').value;
+  document.querySelector('#home h1').innerHTML = document.getElementById('wHeroH1').value.replace('Excellence','<span style="color:var(--accent-green)">Excellence</span>');
+  document.querySelector('#home p').textContent = document.getElementById('wHeroDesc').value;
+  showToast('Website content updated!');
+}
+function applyStats(){
+  document.getElementById('stat1').textContent = document.getElementById('wStat1').value;
+  document.getElementById('stat2').textContent = document.getElementById('wStat2').value;
+  document.getElementById('stat3').textContent = document.getElementById('wStat3').value;
+  showToast('Stats updated!');
+}
+
+function renderAllTables(){ renderStudents(); renderCourses(); renderCenters(); renderTransactions(); renderMaterials(); renderExams(); }
+
+// ========== PUBLIC SITE FUNCTIONS ==========
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('active');
+});
+function openLightbox(src){ document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').classList.add('active'); document.body.style.overflow='hidden'; }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow='auto'; }
+function toggleAccordion(btn){
+  const item=btn.parentElement; const content=item.querySelector('.accordion-content'); const span=btn.querySelector('span'); const isActive=item.classList.contains('active');
+  document.querySelectorAll('.accordion-item').forEach(a=>{a.classList.remove('active');a.querySelector('.accordion-content').style.maxHeight=null;a.querySelector('span').textContent='+';});
+  if(!isActive){item.classList.add('active');content.style.maxHeight=content.scrollHeight+30+'px';span.textContent='-';}
+}
+document.getElementById('resourceSearch').addEventListener('input', function(){
+  const term=this.value.toLowerCase();
+  document.querySelectorAll('.accordion-item').forEach(item=>{
+    let match=false;
+    item.querySelectorAll('.res-title').forEach(t=>{ const p=t.closest('.resource-link'); if(t.textContent.toLowerCase().includes(term)){p.style.display='flex';match=true;}else{p.style.display='none';}});
+    if(term&&match){item.style.display='block';if(!item.classList.contains('active'))toggleAccordion(item.querySelector('.accordion-header'));}
+    else if(!term){item.style.display='block';item.querySelectorAll('.res-title').forEach(t=>t.closest('.resource-link').style.display='flex');item.classList.remove('active');item.querySelector('.accordion-content').style.maxHeight=null;item.querySelector('span').textContent='+';}
+    else{item.style.display=match?'block':'none';}
+  });
+});
+function handleContactSubmit(e){
+  e.preventDefault(); const btn=e.target.querySelector('button'); const msg=document.getElementById('formMessage');
+  btn.textContent='Sending...'; btn.disabled=true;
+  setTimeout(()=>{ e.target.reset(); btn.textContent='Send Message'; btn.disabled=false; msg.style.display='block'; setTimeout(()=>msg.style.display='none',5000); },1200);
+}
+
+// ========== AI CHATBOT ==========
+function toggleChat(){ document.getElementById('chatBox').classList.toggle('active'); }
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const body = document.getElementById('chatBody');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  // Add user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.textContent = text;
+  body.appendChild(userMsg);
+  body.scrollTop = body.scrollHeight;
+
+  // Typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot typing';
+  typing.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are an AI assistant for Harsh Gupta's personal portfolio website. Harsh is a Class 12 Science student (PCM) from New Delhi, India, aspiring to become a civil servant (IAS/UPSC). 
+
+Key facts about Harsh:
+- Class 12 student, Science stream (Physics, Chemistry, Mathematics)
+- Email: hg20046@gmail.com, Location: New Delhi, India
+- Won 1st Prize at District Science Exhibition (Oct 2023)
+- Gold Medal at Regional Mathematics Olympiad (Aug 2023)
+- Best Speaker at Inter-School Debate Championship (Jan 2023)
+- Has 5 certifications including National Science Camp, CS101
+- Provides study resources for Class 12 (Math, Physics, Chemistry, Biology, English)
+- The website was built using a dark navy and green theme
+- Admin panel accessible to admin only
+
+Be helpful, friendly, and concise. Answer questions about Harsh, his achievements, study resources, the website, and general academic topics. Keep responses short and conversational.`,
+        messages: [{ role: 'user', content: text }]
+      })
     });
+    const data = await response.json();
+    typing.remove();
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.textContent = data.content?.[0]?.text || 'Sorry, I could not get a response right now.';
+    body.appendChild(botMsg);
+  } catch(err) {
+    typing.remove();
+    const errMsg = document.createElement('div');
+    errMsg.className = 'chat-msg bot';
+    errMsg.textContent = 'Oops! Connection issue. Please try again in a moment.';
+    body.appendChild(errMsg);
+  }
+  body.scrollTop = body.scrollHeight;
+}
 
-    // Close mobile menu on link click
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        if(window.innerWidth <= 768) {
-          navLinks.classList.remove('active');
-        }
-      });
-    });
-
-    // Lightbox Functionality
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-
-    function openLightbox(imgSrc) {
-      lightboxImg.src = imgSrc;
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-
-    // Accordion Functionality
-    function toggleAccordion(btn) {
-      const item = btn.parentElement;
-      const content = item.querySelector('.accordion-content');
-      const span = btn.querySelector('span');
-      
-      const isActive = item.classList.contains('active');
-      
-      // Close all
-      document.querySelectorAll('.accordion-item').forEach(acc => {
-        acc.classList.remove('active');
-        acc.querySelector('.accordion-content').style.maxHeight = null;
-        acc.querySelector('span').textContent = '+';
-      });
-
-      // If not active before, open it
-      if (!isActive) {
-        item.classList.add('active');
-        content.style.maxHeight = content.scrollHeight + 30 + "px"; // + padding
-        span.textContent = '-';
-      }
-    }
-
-    // Resource Search Filter
-    const searchInput = document.getElementById('resourceSearch');
-    searchInput.addEventListener('input', function(e) {
-      const term = e.target.value.toLowerCase();
-      const accordionItems = document.querySelectorAll('.accordion-item');
-
-      accordionItems.forEach(item => {
-        let hasMatch = false;
-        const titles = item.querySelectorAll('.res-title');
-        
-        titles.forEach(title => {
-          const parent = title.closest('.resource-link');
-          if (title.textContent.toLowerCase().includes(term)) {
-            parent.style.display = 'flex';
-            hasMatch = true;
-          } else {
-            parent.style.display = 'none';
-          }
-        });
-
-        // Auto-expand if there's a match and search isn't empty
-        const btn = item.querySelector('.accordion-header');
-        if (term !== '' && hasMatch) {
-          item.style.display = 'block';
-          if (!item.classList.contains('active')) toggleAccordion(btn);
-        } else if (term === '') {
-          item.style.display = 'block';
-          titles.forEach(title => title.closest('.resource-link').style.display = 'flex');
-          // Collapse all when cleared
-          item.classList.remove('active');
-          item.querySelector('.accordion-content').style.maxHeight = null;
-          item.querySelector('span').textContent = '+';
-        } else {
-          item.style.display = hasMatch ? 'block' : 'none';
-        }
-      });
-    });
-
-    // Contact Form Validation & Submit (Client-side only)
-    function handleContactSubmit(e) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button');
-      const msg = document.getElementById('formMessage');
-      
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-
-      // Simulate network request
-      setTimeout(() => {
-        form.reset();
-        btn.textContent = 'Send Message';
-        btn.disabled = false;
-        msg.style.display = 'block';
-        
-        setTimeout(() => {
-          msg.style.display = 'none';
-        }, 5000);
-      }, 1000);
-    }
-
-    // Chat Widget Functionality
-    function toggleChat() {
-      const box = document.getElementById('chatBox');
-      box.classList.toggle('active');
-    }
-
-    function handleChatSubmit(e) {
-      e.preventDefault();
-      const input = document.getElementById('chatInput');
-      const body = document.getElementById('chatBody');
-      const text = input.value.trim();
-      
-      if(!text) return;
-
-      // User message
-      body.innerHTML += `<div class="chat-message" style="background:var(--accent-green); margin-left:2rem;">${text}</div>`;
-      input.value = '';
-      body.scrollTop = body.scrollHeight;
-
-      // Bot reply
-      setTimeout(() => {
-        body.innerHTML += `<div class="chat-message" style="margin-right:2rem;">Thank you for your message! This is an offline demo, but I've saved your note locally.</div>`;
-        body.scrollTop = body.scrollHeight;
-      }, 1000);
-    }
-
-    // Initialize first accordion
-    window.addEventListener('DOMContentLoaded', () => {
-      const firstAcc = document.querySelector('.accordion-header');
-      if(firstAcc) toggleAccordion(firstAcc);
-    });
-  </script>
+// Open admin login on load (to show it exists but can be dismissed)
+window.addEventListener('load', () => {
+  // Show login on load so admin can see it; close it if user doesn't need it
+  // It's already shown by default via the .active class above
+});
+</script>
 </body>
 </html>
